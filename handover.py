@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Aug 24 10:17:07 2021
-
 @author: Andi5
 """
 import streamlit as st
@@ -19,7 +18,7 @@ st.set_page_config(page_title='SWAST - Handover Delays',  layout='wide', page_ic
 t1, t2 = st.columns((0.07,1)) 
 
 t1.image('images/index.png', width = 120)
-t2.title("South Western Ambulance Service - Hospital Handover Report")
+t2.title("Laboratório de Dados - Jonas Jr.")
 t2.markdown(" **tel:** 01392 451192 **| website:** https://www.swast.nhs.uk **| email:** mailto:data.science@swast.nhs.uk")
 
 
@@ -29,6 +28,20 @@ t2.markdown(" **tel:** 01392 451192 **| website:** https://www.swast.nhs.uk **| 
 with st.spinner('Updating Report...'):
     
     #Metrics setting and rendering
+
+    wb_df = pd.read_excel('worldbank.xlsx',sheet_name = 'Data')
+    inds_all = wb_df['Indicator Name']
+    inds = sorted( set( inds_all ) )
+
+    ind_options = st.multiselect( 'Escolha os indicadores', inds, [] )
+    st.write( '### Indicadores selecionados:' )
+    
+    for ind in ind_options :
+        st.write( "- ", ind )
+    
+    wb_df
+
+    #hosp = st.selectbox('Choose Hospital', hosp_df, help = 'Filter report to show only one hospital')
 
     hosp_df = pd.read_excel('DataforMock.xlsx',sheet_name = 'Hospitals')
     hosp = st.selectbox('Choose Hospital', hosp_df, help = 'Filter report to show only one hospital')
@@ -271,9 +284,6 @@ with st.expander("Contact us"):
         st.text_area("Query","Please fill in all the information or we may not be able to process your request")  
         
         submit_button = st.form_submit_button(label='Send Information')
-        
-        
-        
         
         
         
